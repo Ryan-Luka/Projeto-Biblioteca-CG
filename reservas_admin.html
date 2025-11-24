@@ -85,10 +85,18 @@
 
     pendentes.forEach((r, i) => {
       const li = document.createElement("li");
+      // calcular status atual do livro (disponivel / emprestado / reservado)
+      let statusLivro = "disponivel";
+      if (emprestimos.some(emp => emp.livro === r.livro)) {
+        statusLivro = "emprestado";
+      } else if (reservas.some(rr => rr.livro === r.livro && (rr.status === "pendente" || rr.status === "aprovada"))) {
+        statusLivro = "reservado";
+      }
+
       li.innerHTML = `
-        📖 <strong>${r.livro}</strong><br>
+        📖 <strong>${r.livro}</strong> <span class="status ${statusLivro}">${statusLivro.toUpperCase()}</span><br>
         Usuário: ${r.usuario}<br>
-        Status: ${r.status}
+        Reserva: <span class="status ${r.status === 'pendente' ? 'reservado' : 'emprestado'}">${r.status.toUpperCase()}</span>
         <br><button class="botao" data-index="${i}">Liberar empréstimo</button>
       `;
       lista.appendChild(li);

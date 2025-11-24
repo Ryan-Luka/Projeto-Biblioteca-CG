@@ -39,6 +39,8 @@
 
       <h3 style="margin-top: 30px;">📘 Meus livros emprestados</h3>
       <ul id="listaEmprestimos"></ul>
+      <h3 style="margin-top: 30px;">📒 Minhas reservas</h3>
+      <ul id="listaReservasUsuario"></ul>
       <p id="msg"></p>
     </section>
   </main>
@@ -102,7 +104,9 @@
     // ----- LISTAR MEUS LIVROS EMPRESTADOS -----
 let emprestimos = JSON.parse(localStorage.getItem("emprestimos")) || [];
 let devolucoes = JSON.parse(localStorage.getItem("devolucoes")) || [];
+let reservas = JSON.parse(localStorage.getItem("reservas")) || [];
 const listaEmprestimos = document.getElementById("listaEmprestimos");
+const listaReservasUsuario = document.getElementById("listaReservasUsuario");
 
 function atualizarEmprestimos() {
   listaEmprestimos.innerHTML = "";
@@ -127,6 +131,59 @@ function atualizarEmprestimos() {
   });
 }
 
+// --- LISTAR MINHAS RESERVAS ---
+function atualizarReservasUsuario() {
+  listaReservasUsuario.innerHTML = "";
+
+  const minhas = reservas.filter(r => r.usuario === email);
+
+  if (minhas.length === 0) {
+    listaReservasUsuario.innerHTML = "<p style='color:gray;'>Você não possui reservas.</p>";
+    return;
+  }
+
+  minhas.forEach((r, idx) => {
+    const li = document.createElement("li");
+
+    // determinar status do livro
+    let statusLivro = "disponivel";
+    if (emprestimos.some(emp => emp.livro === r.livro)) {
+      statusLivro = "emprestado";
+    } else if (reservas.some(rr => rr.livro === r.livro && (rr.status === "pendente" || rr.status === "aprovada"))) {
+      statusLivro = "reservado";
+    }
+
+    li.innerHTML = `
+      <strong>${r.livro}</strong> <span class="status ${statusLivro}">${statusLivro.toUpperCase()}</span><br>
+      Status da reserva: <span class="status ${r.status === 'pendente' ? 'reservado' : 'emprestado'}">${r.status.toUpperCase()}</span>
+      ${r.status === 'pendente' ? `<button class="botao" data-index="${idx}" style="margin-left:10px;">Cancelar</button>` : ''}
+    `;
+
+    listaReservasUsuario.appendChild(li);
+  });
+}
+
+// permitir cancelar reservas pendentes
+listaReservasUsuario.addEventListener("click", e => {
+  if (e.target.tagName === 'BUTTON') {
+    const i = e.target.getAttribute('data-index');
+    const minhas = reservas.filter(r => r.usuario === email);
+    const reserva = minhas[i];
+    const confirmacao = confirm(`Deseja cancelar a reserva de "${reserva.livro}"?`);
+    if (!confirmacao) return;
+
+    // remover a reserva (apenas a primeira correspondência do usuário/livro)
+    const idxGlobal = reservas.findIndex(r => r.usuario === email && r.livro === reserva.livro && r.status === reserva.status);
+    if (idxGlobal !== -1) {
+      reservas.splice(idxGlobal, 1);
+      localStorage.setItem('reservas', JSON.stringify(reservas));
+      reservas = JSON.parse(localStorage.getItem('reservas')) || [];
+      atualizarReservasUsuario();
+      alert('Reserva cancelada.');
+    }
+  }
+});
+
 // --- ENVIAR SOLICITAÇÃO DE DEVOLUÇÃO ---
 listaEmprestimos.addEventListener("click", e => {
   if (e.target.tagName === "BUTTON") {
@@ -146,6 +203,7 @@ listaEmprestimos.addEventListener("click", e => {
 });
 
 atualizarEmprestimos();
+atualizarReservasUsuario();
 
 </script>
 

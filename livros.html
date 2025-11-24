@@ -138,34 +138,49 @@
   preencherFiltros();
 
   // --- Atualizar lista com filtros ---
-  function atualizarLista() {
-    lista.innerHTML = "";
+ function atualizarLista() {
+  lista.innerHTML = "";
 
-    const filtrados = livros.filter(l => {
-      return (
-        (campoBusca.value === "" || l.titulo.toLowerCase().includes(campoBusca.value.toLowerCase()) || l.autor.toLowerCase().includes(campoBusca.value.toLowerCase())) &&
-        (filtroGenero.value === "" || l.genero === filtroGenero.value) &&
-        (filtroAutor.value === "" || l.autor === filtroAutor.value) &&
-        (filtroAno.value === "" || l.ano === filtroAno.value) &&
-        (filtroTitulo.value === "" || l.titulo.toLowerCase().includes(filtroTitulo.value.toLowerCase()))
-      );
-    });
+  let reservas = JSON.parse(localStorage.getItem("reservas")) || [];
+  let emprestimos = JSON.parse(localStorage.getItem("emprestimos")) || [];
 
-    if (filtrados.length === 0) {
-      lista.innerHTML = "<li style='color:gray;'>Nenhum livro encontrado.</li>";
-      return;
-    }
+  const filtrados = livros.filter(l => {
+    return (
+      (campoBusca.value === "" || l.titulo.toLowerCase().includes(campoBusca.value.toLowerCase()) || l.autor.toLowerCase().includes(campoBusca.value.toLowerCase())) &&
+      (filtroGenero.value === "" || l.genero === filtroGenero.value) &&
+      (filtroAutor.value === "" || l.autor === filtroAutor.value) &&
+      (filtroAno.value === "" || l.ano === filtroAno.value) &&
+      (filtroTitulo.value === "" || l.titulo.toLowerCase().includes(filtroTitulo.value.toLowerCase()))
+    );
+  });
 
-    filtrados.forEach(livro => {
-      const li = document.createElement("li");
-      li.innerHTML = `
-        <strong>${livro.titulo}</strong> — ${livro.autor} (${livro.ano}, ${livro.genero})
-        ${tipo === "usuario" ? `<button class="botao" data-titulo="${livro.titulo}">Reservar</button>` : ""}
-      `;
-      lista.appendChild(li);
-    });
+  if (filtrados.length === 0) {
+    lista.innerHTML = "<li style='color:gray;'>Nenhum livro encontrado.</li>";
+    return;
   }
 
+  filtrados.forEach(livro => {
+    const li = document.createElement("li");
+
+    // Verificar status do livro
+    let status = "disponivel";
+    if (emprestimos.some(emp => emp.livro === livro.titulo)) {
+      status = "emprestado";
+    } else if (reservas.some(r => r.livro === livro.titulo && (r.status === "pendente" || r.status === "aprovada"))) {
+      status = "reservado";
+    }
+    // Mostrar status somente se o usuário estiver logado (admin ou usuário comum)
+    const mostrarStatus = tipo === "usuario" || tipo === "admin";
+    const statusHtml = mostrarStatus ? `<span class="status ${status}">${status.toUpperCase()}</span>` : "";
+
+    li.innerHTML = `
+      <strong>${livro.titulo}</strong> — ${livro.autor} (${livro.ano}, ${livro.genero})
+      ${statusHtml}
+      ${tipo === "usuario" && status === "disponivel" ? `<button class="botao" data-titulo="${livro.titulo}">Reservar</button>` : ""}
+    `;
+    lista.appendChild(li);
+  });
+}
   // --- Eventos dos filtros ---
   campoBusca.addEventListener("input", atualizarLista);
   filtroGenero.addEventListener("change", atualizarLista);

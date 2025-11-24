@@ -244,3 +244,27 @@ h1 .logo {
   width: 45px; /* ajuste até ficar perfeito */
   height: auto;
 }
+#listaLivros li {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.3s;
+}
+
+#listaLivros li:hover {
+  background-color: #f0f0f0; /* cinza claro */
+}
+
+.status {
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.status.disponivel {
+  color: green;
+}
+
+.status.reservado,
+.status.emprestado {
+  color: gray;
+}
+
