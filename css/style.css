@@ -1,0 +1,246 @@
+/* === Estilo geral === */
+/* === Reset básico === */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f8f8;
+  color: #333;
+}
+
+header {
+  background: #0b3c15; /* ou sua cor atual */
+  padding: 15px;
+  display: flex;
+  flex-direction: column; /* coloca título e menu em coluna */
+  align-items: center; /* centraliza tudo */
+}
+
+header h1 {
+  color:#f9f9f9;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+header h1 img {
+  width: 55px; /* ajuste conforme preferir */
+  height: auto;
+}
+
+
+nav {
+  margin-top: 10px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin: 0 12px;
+  font-weight: bold;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+nav a.ativo {
+  text-decoration: underline;
+}
+
+/* === Principal === */
+main {
+  padding: 30px;
+  max-width: 900px;
+  margin: auto;
+}
+
+section {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+/* === Botões === */
+.botao {
+  background-color: #0b3c15;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.botao:hover {
+  background-color: #0b3c15;
+}
+
+.botao[disabled] {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+/* Botão excluir */
+.botao-excluir {
+  background-color: crimson;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  float: right;
+}
+
+.botao-excluir:hover {
+  background-color: darkred;
+}
+
+/* === Campos de formulário === */
+input, textarea, select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* === Busca === */
+.campo-busca {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+  font-size: 16px;
+}
+
+/* === Lista === */
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+li:last-child {
+  border-bottom: none;
+}
+
+/* === Rodapé === */
+footer {
+  text-align: center;
+  background-color: #004080;
+  color: white;
+  padding: 10px 0;
+  margin-top: 40px;
+}
+
+/* === Banner === */
+.banner {
+  text-align: center;
+}
+
+.banner h2 {
+  color: #004080;
+  margin-bottom: 10px;
+}
+
+.banner p {
+  font-size: 16px;
+}
+
+/* === Mensagens de status === */
+.status-ok {
+  color: green;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+#mensagem {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+#mensagem.erro { color: red; }
+#mensagem.sucesso { color: green; }
+
+/* === Chips de filtros === */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.chip {
+  background-color: #add8e6; /* azul claro */
+  color: black;
+  padding: 6px 12px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.chip span {
+  margin-left: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #333;
+}
+
+/* === Hambúrguer (menu retrátil de filtros) === */
+.hamburguer {
+  cursor: pointer;
+  width: 30px;
+  margin: 10px 0;
+}
+
+.hamburguer div {
+  background-color: #333;
+  height: 4px;
+  margin: 5px 0;
+  border-radius: 2px;
+}
+
+/* === Filtros retráteis === */
+.filtros {
+  display: none;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #f9f9f9;
+}
+
+.filtros.ativo {
+  display: block;
+}
+
+h1 {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* espaçamento entre logo e texto */
+}
+
+/* controla o tamanho do logo */
+h1 .logo {
+  width: 45px; /* ajuste até ficar perfeito */
+  height: auto;
+}
