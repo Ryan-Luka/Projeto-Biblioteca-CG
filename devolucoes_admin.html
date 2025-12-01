@@ -16,13 +16,16 @@
       cursor: pointer;
       margin-top: 6px;
     }
-    .status-ok { color: green; font-weight: bold; }
+    .status-ok { color: green; font-weight: bold; margin-top: 10px; }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>📚 Devoluções Pendentes</h1>
+  <h1>
+    <img src="img/image.png" alt="Logo da Biblioteca" class="logo">
+    Devoluções Pendentes
+  </h1>
   <nav id="menu"></nav>
 </header>
 
@@ -39,26 +42,22 @@
 </footer>
 
 <script>
-  // --- MENU DINÂMICO ---
+  // --- MENU ADMIN ---
   const tipo = localStorage.getItem("tipo");
   const menu = document.getElementById("menu");
 
-  if (tipo === "admin") {
-    menu.innerHTML = `
-      <a href="admin.html">⬅️ Voltar ao Painel Admin</a>
-      <a href="livros.html">Livros</a>
-      <a href="reservas_admin.html">Reservas</a>
-      <a href="devolucoes_admin.html" class="ativo">Devoluções</a>
-      <a href="#" id="logoutLink">👤 Sair</a>
-    `;
-  } else {
-    menu.innerHTML = `
-      <a href="index.html">Início</a>
-      <a href="livros.html">Livros</a>
-      <a href="contato.html">Contato</a>
-      <a href="login.html">Login</a>
-    `;
+  if (tipo !== "admin") {
+    alert("Acesso negado!");
+    window.location.href = "login.html";
   }
+
+  menu.innerHTML = `
+    <a href="admin.html">⬅ Painel Admin</a>
+    <a href="livros.html">Livros</a>
+    <a href="reservas_admin.html">Reservas</a>
+    <a href="devolucoes_admin.html" class="ativo">Devoluções</a>
+    <a href="#" id="logoutLink">👤 Sair</a>
+  `;
 
   const logout = document.getElementById("logoutLink");
   if (logout) {
@@ -73,6 +72,7 @@
   // --- Dados ---
   let devolucoes = JSON.parse(localStorage.getItem("devolucoes")) || [];
   let emprestimos = JSON.parse(localStorage.getItem("emprestimos")) || [];
+  let reservas = JSON.parse(localStorage.getItem("reservas")) || [];
 
   const lista = document.getElementById("lista");
   const msg = document.getElementById("msg");
@@ -90,32 +90,61 @@
 
     pendentes.forEach((d, i) => {
       const li = document.createElement("li");
+
       li.innerHTML = `
         Livro: <strong>${d.livro}</strong><br>
         Usuário: ${d.usuario}<br>
         Status: ${d.status}
         <br><button class="botao" data-index="${i}">Confirmar devolução</button>
       `;
+
       lista.appendChild(li);
     });
   }
 
+  // --- Confirmar devolução ---
   lista.addEventListener("click", e => {
-    if (e.target.tagName === "BUTTON") {
-      const i = e.target.getAttribute("data-index");
-      const devolucao = devolucoes[i];
+    if (e.target.tagName !== "BUTTON") return;
 
-      devolucao.status = "confirmada";
-      emprestimos = emprestimos.filter(emp => !(emp.livro === devolucao.livro && emp.usuario === devolucao.usuario));
+    const i = parseInt(e.target.getAttribute("data-index"));
+    const pendentes = devolucoes.filter(d => d.status === "pendente");
+    const devolucao = pendentes[i];
 
-      localStorage.setItem("devolucoes", JSON.stringify(devolucoes));
-      localStorage.setItem("emprestimos", JSON.stringify(emprestimos));
+    if (!devolucao) return;
 
-      msg.className = "status-ok";
-      msg.innerText = `✅ Devolução confirmada: ${devolucao.livro} (${devolucao.usuario})`;
+    // atualizar status da devolução
+    devolucao.status = "confirmada";
 
-      atualizar();
+    // encontrar a posição dela no array global
+    const idxGlobal = devolucoes.findIndex(d =>
+      d.livro === devolucao.livro &&
+      d.usuario === devolucao.usuario &&
+      d.status === "confirmada"
+    );
+
+    if (idxGlobal !== -1) {
+      devolucoes[idxGlobal] = devolucao;
     }
+
+    // remover o empréstimo correspondente
+    emprestimos = emprestimos.filter(emp =>
+      !(emp.livro === devolucao.livro && emp.usuario === devolucao.usuario)
+    );
+
+    // remover apenas reservas do usuário que devolveu
+    reservas = reservas.filter(r =>
+      !(r.livro === devolucao.livro && r.usuario === devolucao.usuario)
+    );
+
+    // salvar alterações
+    localStorage.setItem("devolucoes", JSON.stringify(devolucoes));
+    localStorage.setItem("emprestimos", JSON.stringify(emprestimos));
+    localStorage.setItem("reservas", JSON.stringify(reservas));
+
+    msg.className = "status-ok";
+    msg.innerText = `✔ Devolução confirmada: ${devolucao.livro} (${devolucao.usuario})`;
+
+    atualizar();
   });
 
   atualizar();
@@ -123,4 +152,3 @@
 
 </body>
 </html>
-

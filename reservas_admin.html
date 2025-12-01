@@ -22,7 +22,10 @@
 <body>
 
 <header>
-  <h1>📚 Reservas Pendentes</h1>
+  <h1>
+    <img src="img/image.png" alt="Logo da Biblioteca" class="logo">
+    Reservas Pendentes
+  </h1>
   <nav id="menu"></nav>
 </header>
 
@@ -69,9 +72,11 @@
   // --- Dados ---
   let reservas = JSON.parse(localStorage.getItem("reservas")) || [];
   let emprestimos = JSON.parse(localStorage.getItem("emprestimos")) || [];
+
   const lista = document.getElementById("listaReservas");
   const msg = document.getElementById("msg");
 
+  // --- Atualizar lista ---
   function atualizar() {
     lista.innerHTML = "";
     msg.innerText = "";
@@ -84,8 +89,7 @@
     }
 
     pendentes.forEach((r, i) => {
-      const li = document.createElement("li");
-      // calcular status atual do livro (disponivel / emprestado / reservado)
+      // determinar status atual do livro
       let statusLivro = "disponivel";
       if (emprestimos.some(emp => emp.livro === r.livro)) {
         statusLivro = "emprestado";
@@ -93,27 +97,45 @@
         statusLivro = "reservado";
       }
 
+      const li = document.createElement("li");
       li.innerHTML = `
-        📖 <strong>${r.livro}</strong> <span class="status ${statusLivro}">${statusLivro.toUpperCase()}</span><br>
+        📖 <strong>${r.livro}</strong>
+        <span class="status ${statusLivro}">${statusLivro.toUpperCase()}</span><br>
         Usuário: ${r.usuario}<br>
-        Reserva: <span class="status ${r.status === 'pendente' ? 'reservado' : 'emprestado'}">${r.status.toUpperCase()}</span>
-        <br><button class="botao" data-index="${i}">Liberar empréstimo</button>
+        Status da reserva:
+        <span class="status reservado">${r.status.toUpperCase()}</span>
+        <br>
+        <button class="botao" data-index="${i}">Liberar empréstimo</button>
       `;
       lista.appendChild(li);
     });
   }
 
-  // --- Liberar empréstimo ---
+  // --- Liberação de empréstimo ---
   lista.addEventListener("click", e => {
     if (e.target.tagName === "BUTTON") {
-      const i = e.target.getAttribute("data-index");
-      const reserva = reservas[i];
+      const i = parseInt(e.target.getAttribute("data-index"));
 
-      // Atualiza status da reserva
-      reserva.status = "aprovada";
+      const pendentes = reservas.filter(r => r.status === "pendente");
+      const reserva = pendentes[i];
 
-      // Evita duplicidade de empréstimos
-      const jaEmprestado = emprestimos.some(emp => emp.livro === reserva.livro && emp.usuario === reserva.usuario);
+      if (!reserva) return;
+
+      // achar índice global da reserva
+      const idxGlobal = reservas.findIndex(r =>
+        r.livro === reserva.livro && r.usuario === reserva.usuario && r.status === "pendente"
+      );
+
+      if (idxGlobal === -1) return;
+
+      // atualizar reserva global
+      reservas[idxGlobal].status = "aprovada";
+
+      // evitar duplicidade
+      const jaEmprestado = emprestimos.some(emp =>
+        emp.livro === reserva.livro && emp.usuario === reserva.usuario
+      );
+
       if (!jaEmprestado) {
         emprestimos.push({
           livro: reserva.livro,
@@ -122,11 +144,12 @@
         });
       }
 
+      // salvar alterações
       localStorage.setItem("reservas", JSON.stringify(reservas));
       localStorage.setItem("emprestimos", JSON.stringify(emprestimos));
 
       msg.className = "status-ok";
-      msg.innerText = `✅ Empréstimo liberado para "${reserva.livro}" (${reserva.usuario}).`;
+      msg.innerText = `✅ Empréstimo liberado para "${reserva.livro}".`;
 
       atualizar();
     }
