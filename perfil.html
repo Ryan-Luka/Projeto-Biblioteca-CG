@@ -4,123 +4,7 @@
   <meta charset="UTF-8">
   <title>Perfil do Usuário - Biblioteca Municipal de Campina Grande</title>
   <link rel="stylesheet" href="css/style.css">
-  <style>
-    #listaEmprestimos, #listaReservasUsuario {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    
-    #listaEmprestimos li, #listaReservasUsuario li {
-      margin: 0;
-      padding: 15px;
-      border: none;
-      background-color: #e8e8e8;
-      border-radius: 8px;
-      transition: background-color 0.3s, transform 0.2s;
-    }
-    
-    #listaEmprestimos li:hover, #listaReservasUsuario li:hover {
-      background-color: #d9d9d9;
-      transform: translateY(-2px);
-    }
-    
-    .livro-item {
-      display: flex;
-      gap: 15px;
-      align-items: flex-start;
-    }
-
-    .livro-capa {
-      flex-shrink: 0;
-      min-width: 80px;
-    }
-
-    .capa-imagem {
-      width: 80px;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 6px;
-      background-color: #ccc;
-      display: block;
-    }
-
-    .livro-info {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .livro-info strong {
-      font-size: 16px;
-      color: #333;
-      margin-bottom: 4px;
-    }
-
-    .livro-info .autor {
-      margin: 2px 0;
-      color: #555;
-      font-size: 14px;
-    }
-
-    .livro-info .detalhes {
-      margin: 4px 0 8px 0;
-      color: #777;
-      font-size: 13px;
-    }
-
-    .livro-acoes {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      margin-top: 8px;
-    }
-    
-    .status {
-      font-weight: bold;
-      padding: 6px 12px;
-      border-radius: 20px;
-      display: inline-block;
-    }
-
-    .status.disponivel {
-      background-color: #c8e6c9;
-      color: #1b5e20;
-    }
-
-    .status.reservado,
-    .status.emprestado {
-      background-color: #ffe0b2;
-      color: #e65100;
-    }
-
-    .status.pendente {
-      background-color: #f8bbd0;
-      color: #c2185b;
-    }
-
-    .botao {
-      background: #0b3c15;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      padding: 8px 16px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .botao:hover {
-      background: #082d0e;
-    }
-
-    .botao[disabled] {
-      background: #aaa;
-      cursor: not-allowed;
-    }
-  </style>
+  
 </head>
 <body>
   <header>
@@ -139,9 +23,9 @@
 
       <a href="livros.html" class="botao">📚 Consultar Livros</a>
 
-      <h3 style="margin-top: 30px;">📘 Meus livros emprestados</h3>
+      <h3 class="mt-30">📘 Meus livros emprestados</h3>
       <ul id="listaEmprestimos"></ul>
-      <h3 style="margin-top: 30px;">📒 Minhas reservas</h3>
+      <h3 class="mt-30">📒 Minhas reservas</h3>
       <ul id="listaReservasUsuario"></ul>
       <p id="msg"></p>
     </section>
@@ -216,7 +100,7 @@ function atualizarEmprestimos() {
   const meus = emprestimos.filter(e => e.usuario === email);
 
   if (meus.length === 0) {
-    listaEmprestimos.innerHTML = "<p style='color:gray;'>Você não possui livros emprestados.</p>";
+    listaEmprestimos.innerHTML = "<p class='texto-cinza'>Você não possui livros emprestados.</p>";
     return;
   }
 
@@ -247,7 +131,7 @@ function atualizarReservasUsuario() {
   const minhas = reservas.filter(r => r.usuario === email);
 
   if (minhas.length === 0) {
-    listaReservasUsuario.innerHTML = "<p style='color:gray;'>Você não possui reservas.</p>";
+    listaReservasUsuario.innerHTML = "<p class='texto-cinza'>Você não possui reservas.</p>";
     return;
   }
 

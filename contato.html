@@ -4,63 +4,7 @@
   <meta charset="UTF-8">
   <title>Contato - Biblioteca Municipal de Campina Grande</title>
   <link rel="stylesheet" href="css/style.css">
-  <style>
-    .contato-card {
-      max-width: 720px;
-      margin: 0 auto;
-      background: #f9f9f9;
-      border: 1px solid #e5e5e5;
-      border-radius: 8px;
-      padding: 16px;
-    }
-    .contato-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    .contato-grid .full {
-      grid-column: 1 / -1;
-    }
-    .hint {
-      font-size: 12px;
-      color: #666;
-      margin-top: 4px;
-    }
-    .status {
-      margin-top: 10px;
-      font-weight: 600;
-    }
-    .status.sucesso { color: #2e7d32; }
-    .status.erro { color: #c62828; }
-
-    .campo-busca, input[type="text"], input[type="email"], select, textarea {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      box-sizing: border-box;
-    }
-
-    .botao {
-      background: #3498db;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      padding: 10px 16px;
-      cursor: pointer;
-    }
-    .botao:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .contatos-info {
-      margin-top: 24px;
-      font-size: 14px;
-      color: #333;
-    }
-    .contatos-info strong { font-weight: 700; }
-  </style>
+  
 </head>
 <body>
   <header>
@@ -108,7 +52,7 @@
           </div>
         </div>
 
-        <button type="submit" class="botao" id="btnEnviar">Enviar</button>
+        <button type="submit" class="botao botao-azul" id="btnEnviar">Enviar</button>
       </form>
 
       <p id="msgSucesso" class="status" role="status" aria-live="polite"></p>

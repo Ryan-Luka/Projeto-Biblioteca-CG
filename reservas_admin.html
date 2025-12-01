@@ -4,20 +4,7 @@
   <meta charset="UTF-8">
   <title>Reservas Pendentes - Biblioteca Municipal de Campina Grande</title>
   <link rel="stylesheet" href="css/style.css">
-  <style>
-    ul { list-style: none; padding: 0; }
-    li { margin: 10px 0; padding: 10px; border-bottom: 1px solid #ddd; }
-    .botao {
-      background: #3498db;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      padding: 6px 12px;
-      cursor: pointer;
-      margin-top: 6px;
-    }
-    .status-ok { color: green; font-weight: bold; margin-top: 10px; }
-  </style>
+  
 </head>
 <body>
 
@@ -84,7 +71,7 @@
     const pendentes = reservas.filter(r => r.status === "pendente");
 
     if (pendentes.length === 0) {
-      lista.innerHTML = "<li style='color:gray;'>Nenhuma reserva pendente.</li>";
+      lista.innerHTML = "<li class='texto-cinza'>Nenhuma reserva pendente.</li>";
       return;
     }
 
@@ -105,7 +92,7 @@
         Status da reserva:
         <span class="status reservado">${r.status.toUpperCase()}</span>
         <br>
-        <button class="botao" data-index="${i}">Liberar empréstimo</button>
+        <button class="botao botao-azul" data-index="${i}">Liberar empréstimo</button>
       `;
       lista.appendChild(li);
     });
