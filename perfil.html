@@ -5,22 +5,121 @@
   <title>Perfil do Usuário - Biblioteca Municipal de Campina Grande</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
-    ul { list-style: none; padding: 0; }
-    li { margin: 10px 0; padding: 10px; border-bottom: 1px solid #ddd; }
+    #listaEmprestimos, #listaReservasUsuario {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    #listaEmprestimos li, #listaReservasUsuario li {
+      margin: 0;
+      padding: 15px;
+      border: none;
+      background-color: #e8e8e8;
+      border-radius: 8px;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+    
+    #listaEmprestimos li:hover, #listaReservasUsuario li:hover {
+      background-color: #d9d9d9;
+      transform: translateY(-2px);
+    }
+    
+    .livro-item {
+      display: flex;
+      gap: 15px;
+      align-items: flex-start;
+    }
+
+    .livro-capa {
+      flex-shrink: 0;
+      min-width: 80px;
+    }
+
+    .capa-imagem {
+      width: 80px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 6px;
+      background-color: #ccc;
+      display: block;
+    }
+
+    .livro-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .livro-info strong {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 4px;
+    }
+
+    .livro-info .autor {
+      margin: 2px 0;
+      color: #555;
+      font-size: 14px;
+    }
+
+    .livro-info .detalhes {
+      margin: 4px 0 8px 0;
+      color: #777;
+      font-size: 13px;
+    }
+
+    .livro-acoes {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 8px;
+    }
+    
+    .status {
+      font-weight: bold;
+      padding: 6px 12px;
+      border-radius: 20px;
+      display: inline-block;
+    }
+
+    .status.disponivel {
+      background-color: #c8e6c9;
+      color: #1b5e20;
+    }
+
+    .status.reservado,
+    .status.emprestado {
+      background-color: #ffe0b2;
+      color: #e65100;
+    }
+
+    .status.pendente {
+      background-color: #f8bbd0;
+      color: #c2185b;
+    }
+
     .botao {
-      background: #3498db;
+      background: #0b3c15;
       color: #fff;
       border: none;
       border-radius: 4px;
-      padding: 6px 12px;
+      padding: 8px 16px;
       cursor: pointer;
-      margin-left: 10px;
+      font-weight: bold;
     }
+
+    .botao:hover {
+      background: #082d0e;
+    }
+
     .botao[disabled] {
       background: #aaa;
       cursor: not-allowed;
     }
-    .status-ok { color: green; font-weight: bold; margin-top: 10px; }
   </style>
 </head>
 <body>
@@ -123,12 +222,19 @@ function atualizarEmprestimos() {
 
   meus.forEach((emp, index) => {
     const li = document.createElement("li");
-    li.style.marginBottom = "10px";
     li.innerHTML = `
-      <strong>${emp.livro}</strong>
-      <button class="botao" data-index="${index}" style="margin-left: 10px;">
-        Devolver
-      </button>
+      <div class="livro-item">
+        <div class="livro-capa">
+          <img src="img/capa-padrao.png" alt="Capa de ${emp.livro}" class="capa-imagem">
+        </div>
+        <div class="livro-info">
+          <strong>${emp.livro}</strong>
+          <p class="detalhes">Status: <span class="status emprestado">EMPRESTADO</span></p>
+          <div class="livro-acoes">
+            <button class="botao" data-index="${index}">Devolver</button>
+          </div>
+        </div>
+      </div>
     `;
     listaEmprestimos.appendChild(li);
   });
@@ -157,9 +263,19 @@ function atualizarReservasUsuario() {
     }
 
     li.innerHTML = `
-      <strong>${r.livro}</strong> <span class="status ${statusLivro}">${statusLivro.toUpperCase()}</span><br>
-      Status da reserva: <span class="status ${r.status === 'pendente' ? 'reservado' : 'emprestado'}">${r.status.toUpperCase()}</span>
-      ${r.status === 'pendente' ? `<button class="botao" data-index="${idx}" style="margin-left:10px;">Cancelar</button>` : ''}
+      <div class="livro-item">
+        <div class="livro-capa">
+          <img src="img/capa-padrao.png" alt="Capa de ${r.livro}" class="capa-imagem">
+        </div>
+        <div class="livro-info">
+          <strong>${r.livro}</strong>
+          <p class="detalhes">Status do livro: <span class="status ${statusLivro}">${statusLivro.toUpperCase()}</span></p>
+          <p class="detalhes">Sua reserva: <span class="status ${r.status === 'pendente' ? 'reservado' : 'emprestado'}">${r.status.toUpperCase()}</span></p>
+          <div class="livro-acoes">
+            ${r.status === 'pendente' ? `<button class="botao" data-index="${idx}">Cancelar Reserva</button>` : ''}
+          </div>
+        </div>
+      </div>
     `;
 
     listaReservasUsuario.appendChild(li);
