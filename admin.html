@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Painel do Administrador - Biblioteca Central</title>
+  <title>Painel do Administrador - Biblioteca Municipal de Campina Grande</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -47,18 +47,18 @@
   </main>
 
   <footer>
-    <p>© 2025 Biblioteca Central de Campina Grande</p>
+    <p>© 2025 Biblioteca Municipal de Campina Grande</p>
   </footer>
 
   <script>
-    // --- Proteção de acesso ---
+    //Proteção de acesso
     const tipo = localStorage.getItem("tipo");
     if (tipo !== "admin") {
       alert("Acesso negado! Apenas administradores podem acessar esta página.");
       window.location.href = "login.html";
     }
 
-    // --- Logout ---
+    //Logout
     document.getElementById("logoutLink").addEventListener("click", () => {
       localStorage.setItem("tipo", "");
       localStorage.setItem("nome", "");
@@ -66,7 +66,7 @@
       window.location.href = "index.html";
     });
 
-    // --- Variáveis ---
+    //Variáveis
     const form = document.getElementById("formLivro");
     const lista = document.getElementById("listaLivros");
     const campoBusca = document.getElementById("buscar");
@@ -74,7 +74,7 @@
     let livros = JSON.parse(localStorage.getItem("livros")) || [];
     localStorage.setItem("livros", JSON.stringify(livros));
 
-    // --- Atualiza lista ---
+    //Atualiza lista de livros
     function atualizarLista(filtro = "") {
       lista.innerHTML = "";
 
@@ -100,7 +100,7 @@
       });
     }
 
-    // --- Adicionar novo livro ---
+    //Adicionar novo livro
     form.addEventListener("submit", e => {
       e.preventDefault();
       const titulo = document.getElementById("titulo").value.trim();
@@ -116,7 +116,7 @@
       form.reset();
     });
 
-    // --- Excluir livro ---
+    //Excluir livro
     lista.addEventListener("click", e => {
       if (e.target.classList.contains("botao-excluir")) {
         const index = e.target.getAttribute("data-index");
@@ -128,10 +128,10 @@
       }
     });
 
-    // --- Busca dinâmica ---
+    //Busca dinâmica
     campoBusca.addEventListener("input", () => atualizarLista(campoBusca.value));
 
-    // --- Inicializa lista ---
+    //Inicializa lista
     atualizarLista();
   </script>
 </body>

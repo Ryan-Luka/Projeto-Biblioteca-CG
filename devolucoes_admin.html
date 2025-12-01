@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Devoluções Pendentes - Biblioteca Central</title>
+  <title>Devoluções Pendentes - Biblioteca Municipal de Campina Grande</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
     ul { list-style: none; padding: 0; }
@@ -38,11 +38,11 @@
 </main>
 
 <footer>
-  <p>© 2025 Biblioteca Central de Campina Grande</p>
+  <p>© 2025 Biblioteca Municipal de Campina Grande</p>
 </footer>
 
 <script>
-  // --- MENU ADMIN ---
+  //MENU ADMIN
   const tipo = localStorage.getItem("tipo");
   const menu = document.getElementById("menu");
 
@@ -69,7 +69,7 @@
     });
   }
 
-  // --- Dados ---
+  //Dados
   let devolucoes = JSON.parse(localStorage.getItem("devolucoes")) || [];
   let emprestimos = JSON.parse(localStorage.getItem("emprestimos")) || [];
   let reservas = JSON.parse(localStorage.getItem("reservas")) || [];
@@ -102,7 +102,7 @@
     });
   }
 
-  // --- Confirmar devolução ---
+  //Confirmar devolução
   lista.addEventListener("click", e => {
     if (e.target.tagName !== "BUTTON") return;
 
