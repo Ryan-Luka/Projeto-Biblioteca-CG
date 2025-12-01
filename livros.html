@@ -176,9 +176,20 @@
     const statusHtml = mostrarStatus ? `<span class="status ${status}">${status.toUpperCase()}</span>` : "";
 
     li.innerHTML = `
-      <strong>${livro.titulo}</strong> — ${livro.autor} (${livro.ano}, ${livro.genero})
-      ${statusHtml}
-      ${tipo === "usuario" && status === "disponivel" ? `<button class="botao" data-titulo="${livro.titulo}">Reservar</button>` : ""}
+      <div class="livro-item">
+        <div class="livro-capa">
+          <img src="img/capa-padrao.png" alt="Capa de ${livro.titulo}" class="capa-imagem">
+        </div>
+        <div class="livro-info">
+          <strong>${livro.titulo}</strong>
+          <p class="autor">— ${livro.autor}</p>
+          <p class="detalhes">${livro.ano} | ${livro.genero}</p>
+          <div class="livro-acoes">
+            ${statusHtml}
+            ${tipo === "usuario" && status === "disponivel" ? `<button class="botao" data-titulo="${livro.titulo}">Reservar</button>` : ""}
+          </div>
+        </div>
+      </div>
     `;
     lista.appendChild(li);
   });

@@ -244,23 +244,91 @@ h1 .logo {
   width: 45px; /* ajuste até ficar perfeito */
   height: auto;
 }
+#listaLivros {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 15px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
 #listaLivros li {
-  padding: 8px;
-  border-bottom: 1px solid #ddd;
-  transition: background-color 0.3s;
+  padding: 15px;
+  border: none;
+  background-color: #e8e8e8;
+  border-radius: 8px;
+  transition: background-color 0.3s, transform 0.2s;
+  list-style: none;
 }
 
 #listaLivros li:hover {
-  background-color: #f0f0f0; /* cinza claro */
+  background-color: #d9d9d9;
+  transform: translateY(-2px);
+}
+
+.livro-item {
+  display: flex;
+  gap: 15px;
+  align-items: flex-start;
+}
+
+.livro-capa {
+  flex-shrink: 0;
+  min-width: 80px;
+}
+
+.capa-imagem {
+  width: 80px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 6px;
+  background-color: #ccc;
+  display: block;
+}
+
+.livro-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.livro-info strong {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.livro-info .autor {
+  margin: 2px 0;
+  color: #555;
+  font-size: 14px;
+}
+
+.livro-info .detalhes {
+  margin: 4px 0 8px 0;
+  color: #777;
+  font-size: 13px;
+}
+
+.livro-acoes {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 8px;
 }
 
 .status {
   font-weight: bold;
   margin-left: 10px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  display: inline-block;
 }
 
 .status.disponivel {
-  color: green;
+  background-color: #c8e6c9;
+  color: #1b5e20;
 }
 
 .status.reservado,
